@@ -16,15 +16,133 @@ Berikut adalah bagian kode yang relevan dengan konsep OOP yang dijelaskan:
 
 ```bash
 public class Perhiasan {
-    ...
+        // atribut dan enkapsulasi
+    private String nama; 
+    private String kode; 
+
+    // konstruktor // Inisialisasi
+    public Perhiasan(String nama, String kode) {
+        this.nama = nama; 
+        this.kode = kode; 
+    }
+
+    // mutator // Mengubah
+    public void setNama(String nama) {
+        this.nama = nama; 
+    }
+
+    public void setKode(String kode) {
+        this.kode = kode; 
+    }
+
+    // accessor // Mengambil
+    public String getNama() {
+        return nama; 
+    }
+
+    public String getKode() {
+        return kode; 
+    }
+
+    // polimorfisme overloading // Menampilkan informasi
+    public String displayInfo() {
+        return "Nama: " + getNama() + "\nKode: " + getKode(); 
+    }
+
+    public String displayInfo(String kategori) {
+        return displayInfo() + "\nKategori: " + kategori; 
+    }
+}
 }
 
-public class PerhiasanDetail extends Perhiasan {
-    ...
+public class PerhiasanDetailextends Perhiasan {
+    // konstruktor
+    public PerhiasanDetail(String nama, String kode) {
+        super(nama, kode); // Memanggil 
+    }
+
+    public int getTahunProduksi() {
+        return Integer.parseInt(getKode().substring(0, 2)) + 2000; // Mendapatkan tahun produksi dari kode perhiasan
+    }
+
+    public String getJenisLogam() {
+        String kodeLogam = getKode().substring(2, 4); // Mendapatkan kode logam 
+        // seleksi if
+        if (kodeLogam.equals("01")) {
+            return "Emas"; 
+        } else if (kodeLogam.equals("02")) {
+            return "Perak"; 
+        } else {
+            return "Logam lain"; 
+        }
+    }
+
+    public String getDesain() {
+        String kodeDesain = getKode().substring(4, 6); // Mendapatkan kode desain 
+        // seleksi switch
+        switch (kodeDesain) {
+            case "01":
+                return "Cincin"; 
+            case "02":
+                return "Kalung"; 
+            default:
+                return "Desain lain"; 
+        }
+    }
+
+    public int getNoSeri() {
+        return Integer.parseInt(getKode().substring(6)); // Mendapatkan nomor seri 
+    }
+
+    // polimorfisme overriding // Menampilkan informasi lengkap perhiasan
+    @Override
+    public String displayInfo() {
+        return super.displayInfo() +
+               "\nTahun Produksi: " + getTahunProduksi() +
+               "\nJenis Logam: " + getJenisLogam() +
+               "\nDesain: " + getDesain() +
+               "\nNo Seri: " + getNoSeri(); 
+    }
 }
+import java.util.Scanner;
 
 public class PerhiasanBeraksi {
-    ...
+    public static void main(String[] args) {
+        // error handling
+        try {
+            // IO sederhana
+            Scanner scanner = new Scanner(System.in); // Membuat objek input
+
+            // Array // Membuat array untuk menyimpan objek
+            PerhiasanDetail[] perhiasan = new PerhiasanDetail[2]; 
+
+            // perulangan biasa
+            for (int i = 0; i < perhiasan.length; i++) {
+                System.out.print("Masukkan Nama Perhiasan " + (i + 1) + ": ");
+                String nama = scanner.nextLine(); // Membaca input
+                System.out.print("Masukkan Kode Perhiasan " + (i + 1) + ": ");
+                String kode = scanner.nextLine(); 
+
+                // objek // Membuat objek PerhiasanDetail dengan data yang dibaca
+                perhiasan[i] = new PerhiasanDetail(nama, kode); 
+            }
+
+            // perulangan array // Menampilkan informasi
+            for (PerhiasanDetail data : perhiasan) {
+                System.out.println("====================");
+                System.out.println("Data Perhiasan: ");
+                System.out.println(data.displayInfo()); 
+            }
+            // Menangani kesalahan
+        } catch (NumberFormatException e) {
+            System.out.println("Kesalahan format nomor: " + e.getMessage()); 
+        } catch (StringIndexOutOfBoundsException e) {
+            System.out.println("Kesalahan format kode: " + e.getMessage()); 
+        } catch (Exception e) {
+            System.out.println("Kesalahan umum: " + e.getMessage()); 
+        }
+    }
+}
 }
 ```
 
